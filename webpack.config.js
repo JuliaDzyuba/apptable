@@ -1,13 +1,13 @@
-const path = require('path')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
-const CopyPlugin = require('copy-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path = require('path');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const isProd = process.env.NODE_ENV === 'production'
-const isDev = !isProd
+const isProd = process.env.NODE_ENV === 'production';
+const isDev = !isProd;
 
-const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
+const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`;
 
 const jsLoaders = () => {
   const loaders = [
@@ -24,7 +24,7 @@ const jsLoaders = () => {
   }
 
   return loaders
-}
+};
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -81,11 +81,21 @@ module.exports = {
           'sass-loader'
         ],
       },
+      // {
+      //   test: /\.js$/,
+      //   exclude: /node_modules/,
+      //   use: jsLoaders()
+      // }
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: jsLoaders()
+        loader: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
       }
     ]
   }
-}
+};
